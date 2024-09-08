@@ -1,28 +1,28 @@
-def sol(k):
-    global n, cnt
+N = int(input())
 
-    if k == n:
-        cnt+=1
-        return
-    
-    for i in range(n):
-        if not used_c[i] and not used_up[k+i] and not used_down[k-i+(n-1)] :
-            used_c[i] = True
-            used_up[k+i] = True
-            used_down[k-i+(n-1)] = True
-            sol(k+1)
-            used_c[i] = False
-            used_up[k+i] = False
-            used_down[k-i+(n-1)] = False
+board = [0 for _ in range(N)]
 
-n = int(input())
+count = 0
 
-maps = [[0]*n for _ in range(n)]
-used_c = [False] * n
-used_up = [False] * (2*(n-1)+1)
-used_down = [False] * (2*(n-1)+1)
+# 퀸 위치 가능 여부 함수
+def checkPlace(y):
+    for i in range(y):
+        if (board[y] == board[i] or abs(board[y] - board[i]) == abs(y-i)):
+            return False
+    return True
 
-cnt = 0
+# 퀸 위치에 두기 함수
+def placeQueen(y):
+    global count
 
-sol(0)
-print(cnt)
+    if y == N :
+        count += 1
+    else:
+        for i in range(N):
+            board[y] = i # 퀸을 놓는다.
+            if(checkPlace(y)): # 퀸의 위치를 체크한다. (가로, 세로, 대각선 X)
+                placeQueen(y+1)
+            board[y] = 0
+
+placeQueen(0)
+print(count)
