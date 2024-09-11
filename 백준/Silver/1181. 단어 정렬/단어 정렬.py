@@ -1,16 +1,17 @@
 import sys
 
-n = int(sys.stdin.readline().strip())
+input = sys.stdin.readline
 
-arr = []
+n = int(input().strip())
 
-for _ in range(n):
-    arr.append(sys.stdin.readline().strip())
+lst = []
 
-set_arr = set(arr)
-arr = list(set_arr)
-arr.sort()
-arr.sort(key=len)
+for i in range(n):
+    lst.append(input().strip())
 
-for str in arr:
+lst = list(set(lst))
+lst.sort()
+result = sorted(lst, key=len)
+
+for str in result :
     print(str)
