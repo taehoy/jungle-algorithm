@@ -4,19 +4,23 @@ N, M, V = map(int, input().split())
 
 def dfs(idx):
     global visited
+
     visited[idx] = True
-    print(idx, end= ' ')
+    print(idx, end = " ")
+
     for next in range(1, N+1):
         if not visited[next] and graph[idx][next] :
             dfs(next)
 
-def bfs():
-    global q, visited
-
+def bfs() :
+    global visited, q
+    
+    # 큐가 빌 때까지
     while q:
         cur = q.pop(0)
         visited[cur] = True
-        print(cur, end=' ')
+        print(cur, end=" ")
+
         for next in range(1, N+1):
             if not visited[next] and graph[cur][next] :
                 visited[next] = True
@@ -31,12 +35,9 @@ for _ in range(M):
     graph[a][b] = True
     graph[b][a] = True
 
-# dfs
 dfs(V)
 print()
 
-# bfs
 visited = [False] * (N+1)
 q = [V]
-
 bfs()
