@@ -5,7 +5,9 @@ sys.setrecursionlimit(10**8)
 
 N = int(input())
 
-graph = [[] * (N+1) for _ in range(N+1)]
+
+graph = [[] for _ in range(N+1)]
+
 
 # 노드 별 부모 리스트  ex) 2번노드 -> result[2]
 result = [0] * (N+1)
