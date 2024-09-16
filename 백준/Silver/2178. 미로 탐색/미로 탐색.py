@@ -15,8 +15,7 @@ for i in range(N):
     graph.append(list(map(int, input().rstrip())))
 
 def bfs(x, y):
-    q = deque()
-    q.append((x,y))
+    q = deque([(x,y)]) # 큐 초기화시 값 넣기(리스트)
 
     while q :
         x, y = q.popleft() 
@@ -26,17 +25,10 @@ def bfs(x, y):
             ny = y + dy[i] # 상하 확인
 
             # 그래프 범위 벗어나면 패스
-            if nx <0 or nx >=M or ny <0 or ny >= N :
-                continue
-
-            # 다음 인접 노드가 0이면 패스
-            if graph[ny][nx] == 0 :
-                continue
-
-            if graph[ny][nx] ==1 :
+            if 0 <= nx < M and 0 <= ny < N and graph[ny][nx] ==1 :
                 graph[ny][nx] = graph[y][x]+1
                 q.append((nx,ny))
-            # 다음 인접 노드가 1이면 경로횟수 +1 하고 큐에 넣는다.
+
     return graph[N-1][M-1]
 
 print(bfs(0,0))
