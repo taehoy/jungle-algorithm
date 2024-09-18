@@ -1,45 +1,38 @@
+import sys
+input = sys.stdin.readline
+
+def preorder(x):
+    print(x, end='')
+    if tree[x][0] != '.' :
+        preorder(tree[x][0])
+    if tree[x][1] != '.' :
+        preorder(tree[x][1])
+
+def inorder(x) :
+    if tree[x][0] != '.':
+        inorder(tree[x][0])
+    print(x, end='')
+    if tree[x][1] != '.':
+        inorder(tree[x][1])
+
+def postorder(x):
+    if tree[x][0] != '.':
+        postorder(tree[x][0])
+    if tree[x][1] != '.':
+        postorder(tree[x][1])
+    print(x, end='')
+
 n = int(input())
-inputs = []
-
-for _ in range(n):
-    inputs.append(input().split())
-
-class Node():
-    def __init__(self, item, left, right):
-        self.item = item
-        self.left = left
-        self.right = right
-
-# 값 왼 오
-def preorder(node):
-    print(node.item, end = '')
-    if node.left != '.':
-        preorder(tree[node.left])
-    if node.right != '.':
-        preorder(tree[node.right])
-
-# 왼 값 오
-def inorder(node):
-    if node.left != '.':
-        inorder(tree[node.left])
-    print(node.item, end='')
-    if node.right != '.':
-        inorder(tree[node.right])
-
-# 왼 오 값
-def postorder(node):
-    if node.left != '.':
-        postorder(tree[node.left])
-    if node.right != '.':
-        postorder(tree[node.right])
-    print(node.item, end='')
 
 tree = {}
-for item, left, right in  inputs:
-    tree[item] = Node(item, left, right)
 
-preorder(tree['A'])
+for _ in range(n):
+    root, left, right = input().split()
+    tree[root] = [left, right]
+
+
+preorder('A')
 print()
-inorder(tree['A'])
+inorder('A')
 print()
-postorder(tree['A'])
+postorder('A')
