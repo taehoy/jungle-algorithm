@@ -1,19 +1,20 @@
 import sys
 input = sys.stdin.readline
 
-N = int(input())
+n = int(input())
 
 stack = []
-ans = [0] * N
+result = [0] * n
 towers = list(map(int, input().split()))
 
-for i in range(N):
+for i in range(n) :
     while stack :
-        if stack[-1][1] > towers[i]:
-            ans[i] = stack[-1][0] +1
+        if stack[-1][1] > towers[i] :
+            result[i] = stack[-1][0]
             break
         else :
             stack.pop()
-    stack.append((i, towers[i]))
 
-print(*ans)
+    stack.append((i+1, towers[i]))
+
+print(*result)
