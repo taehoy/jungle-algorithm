@@ -25,9 +25,7 @@ count = 0
 def dfs(first):
     global count 
 
-    # 처음이 실외면 패스
-    if inout[first] == 0 :
-        return
+   
     
     stack = [first]
     visited[first] = True
@@ -55,7 +53,11 @@ def dfs(first):
                     visited[next] = True
 
 for i in range(1, n+1):
+    # 처음이 실외면 패스
+    if inout[i] == 0 :
+        continue
     visited = [False] * (n+1)
-    dfs(i)
+    if not visited[i] :
+        dfs(i)
 
 print(count)
