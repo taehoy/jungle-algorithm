@@ -12,52 +12,44 @@ for i in range(len(s)):
 
 graph = [[] for _ in range(n+1)]
 
+count = 0
+
 while True :
     try :
         a, b = map(int, input().split())
         graph[a].append(b)
         graph[b].append(a)
+        if inout[a] == 1 and inout[b] == 1 :
+            count += 2
     except :
         break
 
-count = 0
+def bfs(first):
+    global count
+    n = 0 # 1의 개수 => 순열을 위함 
 
-def dfs(first):
-    global count 
-
-   
+    q = deque([first])
+    visited[first] = True    
     
-    stack = [first]
-    visited[first] = True
-
-    while stack :
-        now = stack.pop()
+    while q :
+        now = q.popleft()
 
         for next in graph[now]:
-            if not visited[next]:
-                # 실내 -> 실내 : 종료
-                if inout[now] == 1 and inout[next] == 1 :
-                    count +=1
-                    continue
-                # 실내 -> 실외
-                elif inout[now] == 1 and inout[next] == 0 :
-                    stack.append(next)
+            # 0에서 1로 가는것 : 줄 수 세고 큐에 넣지는 말기
+            if inout[next] == 1 :
+                n += 1
+            # 0에서 0으로 가는 것 : 줄 수 세지 말고 큐에 넣기
+            elif inout[next] == 0 :
+                if not visited[next] :
                     visited[next] = True
-                # 실외 -> 실내 : 다음 장소가 끝장소
-                elif inout[now] == 0 and inout[next] == 1:
-                    count +=1
-                    continue
-                # 실외 -> 실외
-                elif inout[now] == 0 and inout[next] == 0 :
-                    stack.append(next)
-                    visited[next] = True
+                    q.append(next)
+    #순열 계산
+    count += n * (n-1)
 
+visited = [False] * (n+1)
 for i in range(1, n+1):
-    # 처음이 실외면 패스
     if inout[i] == 0 :
-        continue
-    visited = [False] * (n+1)
-    if not visited[i] :
-        dfs(i)
+        if not visited[i] :
+            bfs(i)
 
 print(count)
