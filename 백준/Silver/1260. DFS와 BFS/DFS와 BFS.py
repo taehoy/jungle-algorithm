@@ -1,43 +1,62 @@
+# https://www.acmicpc.net/problem/2606
+# 바이러스
+# 시간복잡도 : O(n^2)
+
 import sys
 input = sys.stdin.readline
-N, M, V = map(int, input().split())
+sys.setrecursionlimit(10**8)
+from collections import deque
 
-def dfs(idx):
-    global visited
+n, m, first = map(int, input().split())
 
-    visited[idx] = True
-    print(idx, end = " ")
+graph = [[] for _ in range(n+1)]
+visited = [False]*(n+1)
+result = []
 
-    for next in range(1, N+1):
-        if not visited[next] and graph[idx][next] :
-            dfs(next)
+for _ in range(m):
+    a, b = map(int, input().split())
+    graph[a].append(b)
+    graph[b].append(a)
 
-def bfs() :
-    global visited, q
-    
-    # 큐가 빌 때까지
-    while q:
-        cur = q.pop(0)
-        visited[cur] = True
-        print(cur, end=" ")
+for i in graph:
+    i.sort()
 
-        for next in range(1, N+1):
-            if not visited[next] and graph[cur][next] :
+def dfs(first):
+    stack = []
+    stack.append(first)
+    visited[first] = True
+
+    while stack :
+        now = stack.pop()
+
+        if result.count(now) == 0 :
+            result.append(now)
+        
+        visited[now] = True
+
+        for next in graph[now][::-1]:
+            if not visited[next]:
+                stack.append(next)
+
+    print(*result)
+
+def bfs(first):
+    q = deque()
+    q.append(first)
+
+    visited[first] = True
+
+    while q :
+        now = q.popleft()
+        print(now, end=' ')
+        for next in graph[now]:
+            if not visited[next] :
                 visited[next] = True
                 q.append(next)
+                
 
+dfs(first)
 
-graph = [[False] * (N+1) for _ in range(N+1)]
-visited = [False] * (N+1)
+visited = [False]*(n+1)
 
-for _ in range(M):
-    a, b = map(int, input().split())
-    graph[a][b] = True
-    graph[b][a] = True
-
-dfs(V)
-print()
-
-visited = [False] * (N+1)
-q = [V]
-bfs()
+bfs(first)
