@@ -1,42 +1,47 @@
 import sys
-from collections import deque
+import heapq
 input = sys.stdin.readline
-sys.setrecursionlimit(10**9)
+sys.setrecursionlimit(10**8)
+from collections import deque
+INF = int(1e9) # 무한 의미로 10억 설정
 
-N, M, K, X = map(int, input().split())
+n, m, k, x = map(int,input().split())
 
-# [[0], [0], [0], [0], [0]] 만들기
-graph = [[0] for _ in range(N+1)]
+graph = [[] for i in range(n+1)]
 
-for _ in range(M):
-    a,b = map(int, input().split())
-    graph[a].append(b)
+distance = [INF] * (n+1)
 
-# 거리 count 리스트 
-distance_list = [-1] * (N+1)
-distance_list[X] = 0
+for _ in range(m):
+    a, b = map(int,input().split())
+    graph[a].append((b,1))
 
+def dijkstra(start) :
+    q = []
 
-def bfs(start) :
-    q = deque([start])
+    # 힙 저장 방식 (거리, 노드)
+    heapq.heappush(q, (0, start))
+    distance[start] = 0
+    while q:
+        dist, now = heapq.heappop(q)
 
-    while q : 
-        cur = q.popleft()
+        # 현재 노드가 이미 처리된 적이 있는 노드라면 무시
+        if distance[now] < dist :
+            continue
         
-        # 연결된 리스트 모두 조회
-        for next in graph[cur] :
-            if distance_list[next] == -1 : # 
-                q.append(next)
-                distance_list[next] = distance_list[cur]+1
-           
+        for next, next_cost in graph[now]:
+            cost = dist+next_cost
+
+            if cost < distance[next]:
+                distance[next] = cost
+                heapq.heappush(q, (cost, next))
 
 
-# 출발 도시 X
-bfs(X)
+dijkstra(x)
+flag = False
+for i in range(1, n+1):
+    if distance[i] == k :
+        flag = True
+        print(i)
 
-if K in distance_list :
-    for i in range(1, N+1) :
-        if distance_list[i] == K :
-            print(i)
-else :
+if not flag :
     print(-1)
