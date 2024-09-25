@@ -1,7 +1,6 @@
 import sys
 input = sys.stdin.readline
 sys.setrecursionlimit(10**8)
-from collections import deque
 
 n = int(input())
 
@@ -24,14 +23,17 @@ def dfs(arr, result, idx):
         arr[0] -= 1
         dfs(arr, result + nums[idx], idx+1)
         arr[0] +=1
+
     if arr[1] != 0 :
         arr[1] -= 1
         dfs(arr, result - nums[idx], idx+1)
         arr[1] += 1
+
     if arr[2] != 0 :
         arr[2] -= 1
         dfs(arr, result * nums[idx], idx+1)
         arr[2] += 1
+
     if arr[3] != 0 :
         arr[3] -= 1
         if result < 0 :
