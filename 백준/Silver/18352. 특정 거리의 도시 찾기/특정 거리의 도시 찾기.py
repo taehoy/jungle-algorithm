@@ -1,43 +1,42 @@
 import sys
-import heapq
+from collections import deque
 input = sys.stdin.readline
 sys.setrecursionlimit(10**9)
-INF = float('inf') # 무한 의미로 10억 설정
 
 N, M, K, X = map(int, input().split())
 
-graph = [[] for _ in range(N+1)]
+# [[0], [0], [0], [0], [0]] 만들기
+graph = [[0] for _ in range(N+1)]
 
 for _ in range(M):
     a,b = map(int, input().split())
-    graph[a].append((b,1))
+    graph[a].append(b)
 
-distances = [INF] * (N+1)
+# 거리 count 리스트 
+distance_list = [-1] * (N+1)
+distance_list[X] = 0
 
-def di(start):
-    q = []
-    heapq.heappush(q, (0,start))
-    distances[start] = 0
-    
+
+def bfs(start) :
+    q = deque([start])
+
     while q : 
-        dist, now = heapq.heappop(q)
+        cur = q.popleft()
         
-        if distances[now] < dist :
-            continue
-        
-        for next, next_cost in graph[now]:
-            total_cost = dist + next_cost
+        # 연결된 리스트 모두 조회
+        for next in graph[cur] :
+            if distance_list[next] == -1 : # 
+                q.append(next)
+                distance_list[next] = distance_list[cur]+1
+           
 
-            if total_cost < distances[next] :
-                distances[next] = total_cost
-                heapq.heappush(q, (total_cost, next))
-    
-di(X)
-flag = False
-for i in range(1, N+1):
-    if distances[i] == K :
-        flag = True
-        print(i)
 
-if not flag :
+# 출발 도시 X
+bfs(X)
+
+if K in distance_list :
+    for i in range(1, N+1) :
+        if distance_list[i] == K :
+            print(i)
+else :
     print(-1)
