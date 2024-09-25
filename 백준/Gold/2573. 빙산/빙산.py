@@ -1,79 +1,85 @@
-from copy import deepcopy
-from collections import deque
 import sys
+from copy import deepcopy
 input = sys.stdin.readline
 
-dx = [-1, 0, 1, 0]
-dy = [0, 1, 0, -1]
+from collections import deque
 
-
-# 빙산 주변 바다의 개수 세기
-def count_ocean(x, y):
+# 빙산 주위 물의 개수 세기
+def melt_ice(y,x):
     count = 0
-
+    
     for i in range(4):
         nx = x + dx[i]
         ny = y + dy[i]
 
-        if 0 <= nx < n and 0 <= ny < m and temp_graph[nx][ny] == 0:
+        if 0<= nx < m and 0 <= ny < n and graph_copy[ny][nx] == 0 :
             count += 1
-
+    
     return count
-
-
-# BFS로 빙산 덩어리 개수 세기
-def count_iceberg(start_x, start_y):
+    
+def check_iceberg(y,x):
     q = deque()
-    q.append((start_x, start_y))
-    visited[start_x][start_y] = True
+    q.append((y,x))
+    visited[y][x] = True
 
-    while q:
-        x, y = q.popleft()
+    while q :
+        y,x = q.popleft()
 
         for i in range(4):
-            nx = x + dx[i]
             ny = y + dy[i]
+            nx = x + dx[i]
 
-            if 0 <= nx < n and 0 <= ny < m and graph[nx][ny] != 0 and not visited[nx][ny]:
-                visited[nx][ny] = True
-                q.append((nx, ny))
+            if 0<=ny < n and 0<=nx < m and not visited[ny][nx] and graph[ny][nx] != 0  :
+                visited[ny][nx] = True
+                q.append((ny,nx))
 
 
-n, m = map(int, input().split())
-graph = [list(map(int, input().split())) for _ in range(n)]
-answer = 1
+n , m = map(int, input().split())
+
+graph = [list(map(int,input().split())) for _ in range(n)]
+
+# 시간(년)변수
+result = 1
+
+dx = [1,-1,0,0]
+dy = [0,0,1,-1]
 
 while True:
-    visited = [[False] * m for _ in range(n)]
-    piece = 0
-
-    # 빙산이 다 녹을 때까지 분리되지 않은 경우
+    # 첫 빙산 유무, 없으면 -1을 반환하고 끝낸다.
     flag = True
+
     for i in range(n):
         for j in range(m):
             if graph[i][j] != 0:
                 flag = False
 
-    if flag:
+    if flag :
         print(0)
         break
 
-    # 빙산이 녹은 이후로 업데이트
-    temp_graph = deepcopy(graph)
-    for i in range(1, n - 1):
-        for j in range(1, m - 1):
-            if temp_graph[i][j] != 0:
-                graph[i][j] = max(0, graph[i][j] - count_ocean(i, j))
+    # 방문 여부 리스트 만든다.
+    visited = [[False] * m for _ in range(n)]
+    # 빙산 개수 변수 선언
+    piece = 0
 
-    # 빙산 덩어리 개수 세기
-    for i in range(1, n - 1):
-        for j in range(1, m - 1):
+    # 빙산 녹이기
+    graph_copy = deepcopy(graph)
+    for i in range(1, n-1):
+        for j in range(1, m-1):
+            if graph_copy[i][j] != 0 :
+                graph[i][j] = max(0, graph[i][j] - melt_ice(i,j))
+
+    # 나누어진 빙산 개수 구하기
+
+    for i in range(1, n-1):
+        for j in range(1, m-1):
             if not visited[i][j] and graph[i][j] != 0:
-                count_iceberg(i, j)
+                check_iceberg(i,j)
                 piece += 1
-
-    if piece >= 2:
-        print(answer)
+    
+    # 빙산 개수가 2개 이상이면 그때의 시간 출력
+    if piece >= 2 :
+        print(result)
         break
 
-    answer += 1
+    result += 1
