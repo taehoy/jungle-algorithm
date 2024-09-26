@@ -1,37 +1,43 @@
-import sys
+# <문제 해석> 
+# 바닥 장식에 필요한 나무 판자의 개수를 세는 문제
+# 가로(-), 세로(|) 두 종류의 나무 판자가 있음 
+# 같은 행에 연속된 '-'는 하나의 판자로 취급 -> 몇개가 연속되더라도 1개로 취급
+# 같은 열에 연속된 '|'는 하나의 판자로 취급 -> 몇개가 연속되더라도 1개로 취급
 
-input = sys.stdin.readline
+# <의사 코드>
+# 1. 바닥의 크기 입력 받기
+# 2. 바닥 장식 데이터 -> 2차원 배열로 저장하기 
+# 3. 가로 방향 판자 수 세기 -> for 문 사용하기 -> 조건 어떻게 설정함? 
+# 4. 세로 방향 판자 수 세기 -> for 문 사용하기 -> 조건 어떻게 설정함? 
 
-def dfs(y,x):
-    if graph[y][x] == '-':
-        graph[y][x] = -1
-        # 좌우
-        for next in [1,-1]:
-            nx = x + next
-            if 0<=nx<m and graph[y][nx] == '-':
-                dfs(y,nx)
-    if graph[y][x] == '|':
-        graph[y][x] = -1
+# <코드 작성> 
+# 방 바닥의 크기 입력 받기 (세로 N, 가로 M)
+N, M = map(int, input().strip().split())
 
-        for next in [1,-1]:
-            ny = y + next
-            if 0 <= ny < n and graph[ny][x] == '|':
-                dfs(ny,x)
+# 바닥 장식 데이터를 저장할 리스트 초기화 
+floor = [ ] 
 
-n, m = map(int, input().split())
+# 입력 받은 N줄 데이터를 2차원 배열로 저장하기 (행 row) -> for 문 사용할 것 
+for i in range(N): # N번 반복
+    row = list(input().rstrip()) # 한줄 입력 받기 
+    floor.append(row) # 입력받은 줄을 floor 리스트에 추가하기  #<-- 리스트 입력!
 
-graph = []
+# 판자 개수를 저장할 변수 초기화 
+count = 0
 
-for _ in range(n):
-    graph.append(list(input().rstrip()))
+# 가로 방향 (행) 판자 세기
+for i in range(N):   # 아 몰랑...헷갈려.... 
+    for j in range(M):
+        if floor[i][j] == '-': # 첫번째 칸이 '-'일 경우 판자 1시작 
+            if j == 0 or floor[i][j-1] != '-':
+                count +=1
 
-#나무 판자 개수
-result = 0
 
-for i in range(n):
-    for j in range(m):
-        if graph[i][j] == '-' or graph[i][j] == '|':
-            dfs(i,j)
-            result += 1
+# 세로 방향 (열) 판자 세기 
+for j in range(M):   # 아 몰랑...헷갈려.... 
+    for i in range(N):
+        if floor[i][j] == '|': # 첫번째 칸이 '|'일 경우 판자 1시작 
+            if i == 0 or floor[i-1][j] != '|':
+                count += 1 
 
-print(result)
+print(count)
