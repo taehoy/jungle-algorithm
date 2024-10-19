@@ -33,10 +33,7 @@ for _ in range(t):
         a, b = map(int,input().split())
         graph[b][a] = 1
 
-
     count = 0
-
-
 
     for i in range(n):
         for j in range(m):
