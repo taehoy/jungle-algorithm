@@ -18,8 +18,6 @@ def bfs(y,x):
             if(0 <= n_y < n and 0 <= n_x < m and graph[n_y][n_x] == 1) :
                 graph[n_y][n_x] =0
                 q.append((n_y, n_x))
-
-
 dx = [1, 0, -1, 0]
 dy = [0, 1, 0, -1]
 
