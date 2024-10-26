@@ -1,9 +1,14 @@
-N = int(input())
-list = []
-for _ in range(N):
-    list.append(int(input()))
+import sys
+input = sys.stdin.readline
 
-list.sort(reverse=False)
+n = int(input())
 
-for n in list:
+arr = []
+
+for _ in range(n):
+    arr.append(int(input()))
+
+arr.sort()
+
+for n in arr :
     print(n)
