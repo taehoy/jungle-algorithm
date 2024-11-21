@@ -45,7 +45,6 @@ for _ in range(int(input())):
     w, h = map (int, input().split())
     graph = [list(map(str, input().rstrip())) for _ in range(h)]
 
-    # 불이 붙은 위치 담을 큐
     queue = deque()
     visited = [[0] * w for _ in range(h)]
 
