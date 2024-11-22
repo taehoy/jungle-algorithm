@@ -41,10 +41,12 @@ def bfs(x, y) :
                         visit[nx][ny] = -1
 
     return 'IMPOSSIBLE'
+
 for _ in range(int(input())):
     w, h = map (int, input().split())
     graph = [list(map(str, input().rstrip())) for _ in range(h)]
 
+    # 불이 붙은 위치 담을 큐
     queue = deque()
     visited = [[0] * w for _ in range(h)]
 
@@ -58,4 +60,5 @@ for _ in range(int(input())):
                 sx, sy = i, j
     
     visit = burn()
+
     print(bfs(sx, sy))
