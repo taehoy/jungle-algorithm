@@ -13,7 +13,6 @@ sums = set()
 for i in nums:
     for j in nums:
         sums.add(i+j)
-
 ans = []
 
 for i in nums:
