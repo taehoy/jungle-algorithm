@@ -1,15 +1,11 @@
 import sys
 input =  sys.stdin.readline
 
-result= int(input()) * int(input()) * int(input())
+a = int(input())
+b = int(input())
+c = int(input())
 
-s = str(result)
+result = list(str(a * b * c))
 
-arr = [0]*10
-
-for st in s :
-    arr[int(st)] += 1
-
-
-for n in arr :
-    print(n)
+for i in range(10) :
+    print(result.count(str(i)))
